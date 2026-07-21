@@ -1,0 +1,16 @@
+{
+  "final_file": "public/poster.png",
+  "final_size": "1024x1024 PNG",
+  "source": {
+    "provider": "Aigram platform transit image endpoint",
+    "endpoint": "https://chat.aiwaves.tech/aigram/api/gen-image",
+    "origin_header": "https://aigram.app",
+    "source_url": "https://cdn.aiwaves.tech/prod/telegram/avatar/0/1784663345774128.webp",
+    "generated_at": "2026-07-22"
+  },
+  "processing": "Cropped the platform-generated raster key art to remove an erroneous device mockup frame; converted the cropped image to PNG and resized it to 1024x1024. No SVG, CSS, Canvas artwork, game screenshot, ComfyUI, local workflow, or deprecated endpoint was used.",
+  "review": {
+    "original_1024": "Approved: title is legible in the top safe area and the crystal portal remains the primary subject.",
+    "thumbnail_160": "Approved: title, central luminous hand, and crystal halo remain identifiable."
+  }
+}

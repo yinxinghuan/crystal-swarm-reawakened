@@ -1,0 +1,77 @@
+.csr {
+  --csr-text: #eaf5ff;
+  width: 100%;
+  min-height: 100dvh;
+  background: #050913;
+  overflow: hidden;
+  color: var(--csr-text);
+
+  &__stage {
+    position: relative;
+    width: min(100vw, 520px);
+    height: 100dvh;
+    min-height: 568px;
+    margin: 0 auto;
+    overflow: hidden;
+    isolation: isolate;
+    touch-action: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  &__canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+
+  &__header {
+    position: absolute;
+    top: max(18px, env(safe-area-inset-top));
+    left: 22px;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  &__eyebrow { margin: 0 0 5px; color: rgba(170, 204, 225, .56); font-size: 9px; font-weight: 600; letter-spacing: .17em; }
+  h1 { margin: 0; color: rgba(234, 245, 255, .92); font-family: Georgia, "Noto Serif SC", serif; font-size: 18px; font-weight: 600; letter-spacing: .11em; line-height: 1; }
+
+  &__icon-button {
+    position: absolute;
+    z-index: 3;
+    display: grid;
+    width: 44px;
+    height: 44px;
+    padding: 10px;
+    place-items: center;
+    border: 1px solid rgba(170, 224, 255, .15);
+    border-radius: 50%;
+    background: rgba(5, 9, 19, .06);
+    color: rgba(234, 245, 255, .83);
+    cursor: pointer;
+    transition: transform 120ms ease, background 180ms ease, border-color 180ms ease;
+    touch-action: manipulation;
+
+    &:active { transform: scale(.9); background: rgba(119, 247, 230, .14); }
+    &:focus-visible { outline: 2px solid #77f7e6; outline-offset: 3px; }
+    svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.6; }
+  }
+
+  &__mute { top: max(16px, env(safe-area-inset-top)); right: 18px; }
+  &__restart { bottom: max(16px, env(safe-area-inset-bottom)); left: 18px; }
+
+  &__hint, &__bloom-copy, &__count, &__signature { position: absolute; z-index: 2; pointer-events: none; }
+  &__hint { top: max(88px, calc(env(safe-area-inset-top) + 70px)); left: 50%; width: min(260px, calc(100% - 48px)); margin: 0; transform: translateX(-50%); color: rgba(221, 241, 255, .76); font-size: 15px; line-height: 1.55; text-align: center; transition: opacity 280ms ease; }
+  &__count { top: max(88px, calc(env(safe-area-inset-top) + 70px)); right: 22px; margin: 0; color: #bdfcf3; font-family: Georgia, serif; font-size: 17px; font-variant-numeric: tabular-nums; span { color: rgba(189, 252, 243, .46); font-size: 12px; } }
+  &__bloom-copy { top: 27%; left: 50%; margin: 0; transform: translateX(-50%); color: rgba(234, 245, 255, .94); font-family: Georgia, "Noto Serif SC", serif; font-size: 16px; letter-spacing: .08em; white-space: nowrap; animation: csr-bloom-copy 4s ease both; }
+  &__signature { right: 20px; bottom: max(28px, calc(env(safe-area-inset-bottom) + 12px)); margin: 0; color: rgba(150, 187, 207, .38); font-size: 8px; font-weight: 600; letter-spacing: .2em; }
+
+  &--fallback { display: grid; min-height: 100dvh; place-content: center; padding: 28px; text-align: center; .csr__fallback-crystal { width: 58px; height: 72px; margin: 0 auto 28px; border: 1px solid rgba(152, 255, 241, .65); background: linear-gradient(135deg, rgba(119, 247, 230, .52), rgba(119, 172, 255, .08)); clip-path: polygon(50% 0, 88% 28%, 72% 100%, 22% 84%, 10% 24%); box-shadow: 0 0 36px rgba(119, 247, 230, .22); } h1 { font-size: 21px; } p { max-width: 260px; margin: 18px auto 26px; color: #90a6bc; font-size: 16px; line-height: 1.5; } }
+  &__fallback-retry { min-height: 44px; padding: 0 18px; border: 1px solid rgba(119, 247, 230, .52); border-radius: 22px; background: transparent; color: #eaf5ff; font: inherit; touch-action: manipulation; }
+}
+
+@keyframes csr-bloom-copy { 0% { opacity: 0; transform: translate(-50%, 8px); } 12%, 72% { opacity: 1; transform: translate(-50%, 0); } 100% { opacity: 0; transform: translate(-50%, -4px); } }
+
+@media (max-height: 640px) {
+  .csr__header { top: 15px; } .csr__eyebrow { display: none; } .csr h1 { font-size: 15px; } .csr__hint { top: 70px; font-size: 14px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .csr__icon-button, .csr__hint { transition: none; } .csr__bloom-copy { animation: none; }
+}

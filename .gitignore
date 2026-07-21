@@ -1,0 +1,7 @@
+node_modules/
+dist/
+.DS_Store
+public/poster-original.webp
+public/poster-source.webp
+public/poster-base.png
+public/poster-crop.png
