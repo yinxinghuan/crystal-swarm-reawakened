@@ -150,6 +150,16 @@ export function useCrystalSwarm() {
       const height = shell.clientHeight
       const cx = width * .5
       const cy = height * .52
+      const demoActive = !startRef.current && !reducedRef.current
+      const demoClock = (now % 3800) / 3800
+      const demoPath = [{ x: .5, y: .52 }, { x: .5, y: .52 }, { x: .67, y: .43 }, { x: .71, y: .54 }, { x: .55, y: .57 }]
+      const demoSegment = Math.min(3, Math.floor(Math.max(0, demoClock - .12) / .18))
+      const demoLocal = Math.max(0, Math.min(1, (demoClock - .12) / .18 - demoSegment))
+      const demoFrom = demoPath[demoSegment]
+      const demoTo = demoPath[demoSegment + 1]
+      const demoX = demoFrom.x + (demoTo.x - demoFrom.x) * demoLocal
+      const demoY = demoFrom.y + (demoTo.y - demoFrom.y) * demoLocal
+      const demoStrength = demoActive && demoClock > .12 && demoClock < .88 ? 1 : 0
       const bloomElapsed = bloomRef.current ? now - bloomRef.current : 0
       const bloomProgress = Math.min(1, bloomElapsed / 5400)
       if (!bloomRef.current && awakenedRef.current >= COMPLETE_AT && now - startRef.current > 5000) {
@@ -191,6 +201,27 @@ export function useCrystalSwarm() {
           context.stroke()
         }
       }
+      if (demoStrength) {
+        const demoTraceCount = Math.max(1, Math.min(4, demoSegment + 1))
+        context.lineCap = 'round'
+        for (let index = 1; index <= demoTraceCount; index += 1) {
+          const from = demoPath[index - 1]
+          const to = index === demoTraceCount ? { x: demoX, y: demoY } : demoPath[index]
+          context.strokeStyle = `rgba(130, 248, 234, ${.12 + index * .065})`
+          context.lineWidth = 1.5 + index * 1.3
+          context.beginPath()
+          context.moveTo(from.x * width, from.y * height)
+          context.lineTo(to.x * width, to.y * height)
+          context.stroke()
+        }
+        const px = demoX * width
+        const py = demoY * height
+        context.strokeStyle = 'rgba(159, 255, 243, .48)'
+        context.lineWidth = 1
+        context.beginPath(); context.arc(px, py, 12 + Math.sin(now / 90) * 2, 0, Math.PI * 2); context.stroke()
+        context.strokeStyle = 'rgba(119, 172, 255, .14)'
+        context.beginPath(); context.arc(px, py, 24 + Math.sin(now / 130) * 3, 0, Math.PI * 2); context.stroke()
+      }
       if (pointerRef.current.down) {
         const px = pointerRef.current.x * width
         const py = pointerRef.current.y * height
@@ -226,14 +257,17 @@ export function useCrystalSwarm() {
         crystal.x = Math.max(.03, Math.min(.97, crystal.x))
         crystal.y = Math.max(.08, Math.min(.94, crystal.y))
         crystal.spin += .006 * motion + crystal.active * .004
-        const x = crystal.x * width
-        const y = crystal.y * height
-        const size = crystal.size * (.72 + crystal.active * .5 + bloomProgress * .22)
-        const lum = .12 + crystal.active * .76
+        const demoDistance = Math.hypot(crystal.x - demoX, (crystal.y - demoY) * .58)
+        const demoGlow = demoStrength && demoDistance < .17 ? (1 - demoDistance / .17) * .76 : 0
+        const displayActive = Math.max(crystal.active, demoGlow)
+        const x = (crystal.x + (demoX - crystal.x) * demoGlow * .024) * width
+        const y = (crystal.y + (demoY - crystal.y) * demoGlow * .024) * height
+        const size = crystal.size * (.72 + displayActive * .5 + bloomProgress * .22)
+        const lum = .12 + displayActive * .76
         context.save()
         context.translate(x, y)
         context.rotate(crystal.spin)
-        context.shadowBlur = crystal.active * 18 + bloomProgress * 10
+        context.shadowBlur = displayActive * 18 + bloomProgress * 10
         context.shadowColor = `hsla(${crystal.hue}, 95%, 70%, .8)`
         context.beginPath()
         context.moveTo(0, -size)

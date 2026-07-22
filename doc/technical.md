@@ -20,7 +20,7 @@
 
 ## 3. 核心模块
 
-- `useCrystalSwarm` 用 refs 保存高频晶体物理、触点、轨迹与 requestAnimationFrame，只有阶段、唤醒数、静音和提示等需要 DOM 改变的状态进入 React state。首次 Pointer down 立即标记提示为已读，组件在 280 ms 内卸载 CSS 幽灵手势，避免与真实手势重叠。
+- `useCrystalSwarm` 用 refs 保存高频晶体物理、触点、轨迹与 requestAnimationFrame，只有阶段、唤醒数、静音和提示等需要 DOM 改变的状态进入 React state。空闲渲染循环按 3.8 秒时钟计算一枚演示触点，绘制折射轨迹及仅用于 display 的 `demoGlow`，不修改晶体的真实激活或进度；首次 Pointer down 立即标记提示为已读，组件在 280 ms 内卸载 CSS 幽灵手势，避免与真实手势重叠。
 - 晶体初始以随机环带分布；触点周围按椭圆半径激活，激活后施加小引力、阻尼和高光。42 枚激活且触碰超过 5 秒后进入 Bloom。
 - Canvas 会用 `ResizeObserver` 重设 dpr 画布，限制 dpr 至 2；高 dpr 或 reduced-motion 时将尘埃从 180 减至 80，并取消晶体环绕。
 - Pointer 控制绑定在整块舞台，使用 `onPointerDown`、`onPointerMove` 与 `setPointerCapture`；R/M/Space 提供桌面重启、静音与中心唤醒辅助。
