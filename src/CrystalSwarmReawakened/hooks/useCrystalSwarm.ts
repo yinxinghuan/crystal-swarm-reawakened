@@ -84,6 +84,7 @@ export function useCrystalSwarm() {
     event.currentTarget.setPointerCapture(event.pointerId)
     pointerRef.current = { x, y, down: true, moved: false, lastMove: now }
     addTrail(x, y, now)
+    setHintDismissed(true)
     if (!startRef.current) {
       startRef.current = now
       phaseRef.current = 'awaken'

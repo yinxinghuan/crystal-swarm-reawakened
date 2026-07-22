@@ -57,7 +57,11 @@
   &__restart { bottom: max(16px, env(safe-area-inset-bottom)); left: 18px; }
 
   &__hint, &__bloom-copy, &__count, &__signature { position: absolute; z-index: 2; pointer-events: none; }
-  &__hint { top: max(88px, calc(env(safe-area-inset-top) + 70px)); left: 50%; width: min(260px, calc(100% - 48px)); margin: 0; transform: translateX(-50%); color: rgba(221, 241, 255, .76); font-size: 15px; line-height: 1.55; text-align: center; transition: opacity 280ms ease; }
+  &__demo { position: absolute; z-index: 3; top: calc(50% - 100px); left: 50%; width: 220px; height: 180px; transform: translateX(-50%); pointer-events: none; opacity: .92; }
+  &__demo-path { position: absolute; inset: 0; width: 220px; height: 180px; overflow: visible; path { fill: none; stroke: rgba(137, 239, 242, .56); stroke-width: 1.25; stroke-linecap: round; stroke-dasharray: 7 10; animation: csr-demo-dash 2.7s linear infinite; } }
+  &__demo-finger { position: absolute; top: 115px; left: 64px; width: 48px; height: 48px; color: #eaf5ff; filter: drop-shadow(0 0 9px rgba(119, 247, 230, .72)); animation: csr-demo-drag 3.8s cubic-bezier(.4,0,.2,1) infinite; svg { position: absolute; inset: 0; width: 48px; height: 48px; fill: currentColor; stroke: none; transform: translate(-50%, -50%) rotate(-10deg); animation: csr-demo-press 3.8s ease-in-out infinite; } }
+  &__demo-ripple { position: absolute; left: 0; top: 0; width: 24px; height: 24px; margin: -12px; border: 1.5px solid rgba(162, 255, 242, .9); border-radius: 50%; animation: csr-demo-ripple 3.8s ease-out infinite; }
+  &__hint { top: 166px; left: 50%; width: min(260px, calc(100% - 48px)); margin: 0; transform: translateX(-50%); color: rgba(221, 241, 255, .72); font-size: 14px; line-height: 1.55; text-align: center; }
   &__count { top: max(88px, calc(env(safe-area-inset-top) + 70px)); right: 22px; margin: 0; color: #bdfcf3; font-family: Georgia, serif; font-size: 17px; font-variant-numeric: tabular-nums; span { color: rgba(189, 252, 243, .46); font-size: 12px; } }
   &__bloom-copy { top: 27%; left: 50%; margin: 0; transform: translateX(-50%); color: rgba(234, 245, 255, .94); font-family: Georgia, "Noto Serif SC", serif; font-size: 16px; letter-spacing: .08em; white-space: nowrap; animation: csr-bloom-copy 4s ease both; }
   &__signature { right: 20px; bottom: max(28px, calc(env(safe-area-inset-bottom) + 12px)); margin: 0; color: rgba(150, 187, 207, .38); font-size: 8px; font-weight: 600; letter-spacing: .2em; }
@@ -67,11 +71,15 @@
 }
 
 @keyframes csr-bloom-copy { 0% { opacity: 0; transform: translate(-50%, 8px); } 12%, 72% { opacity: 1; transform: translate(-50%, 0); } 100% { opacity: 0; transform: translate(-50%, -4px); } }
+@keyframes csr-demo-drag { 0%,12% { transform: translate(0,0); } 20% { transform: translate(3px,3px); } 43% { transform: translate(96px,-54px); } 68% { transform: translate(112px,24px); } 82% { transform: translate(30px,16px); } 100% { transform: translate(0,0); opacity: 0; } }
+@keyframes csr-demo-press { 0%,12%,88%,100% { transform: translate(-50%,-50%) rotate(-10deg) scale(1); } 18% { transform: translate(-50%,-50%) rotate(-10deg) scale(.86); } 28% { transform: translate(-50%,-50%) rotate(-10deg) scale(1); } }
+@keyframes csr-demo-ripple { 0%,13% { transform: scale(.35); opacity: 0; } 18% { transform: scale(.55); opacity: 1; } 33% { transform: scale(3.2); opacity: 0; } 100% { opacity: 0; } }
+@keyframes csr-demo-dash { to { stroke-dashoffset: -34; } }
 
 @media (max-height: 640px) {
-  .csr__header { top: 15px; } .csr__eyebrow { display: none; } .csr h1 { font-size: 15px; } .csr__hint { top: 70px; font-size: 14px; }
+  .csr__header { top: 15px; } .csr__eyebrow { display: none; } .csr h1 { font-size: 15px; } .csr__demo { transform: translateX(-50%) scale(.86); } .csr__hint { font-size: 13px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .csr__icon-button, .csr__hint { transition: none; } .csr__bloom-copy { animation: none; }
+  .csr__icon-button { transition: none; } .csr__bloom-copy, .csr__demo-path path, .csr__demo-finger, .csr__demo-finger svg, .csr__demo-ripple { animation: none; } .csr__demo-finger { transform: translate(40px, -18px); }
 }
